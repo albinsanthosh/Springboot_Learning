@@ -1,0 +1,47 @@
+MVC 
+
+Controller (Logic)
+
+Model(data)
+
+View template(JSP, Groovy etc)
+
+1. web.xml - dispatcher servlet (Front controller), servlet mapping, location for the spring config file.
+
+2. spring config file.xml - component scanning, supporting functions, MVC view resolver(prefix, suffix for getting view files)
+
+-----Adding static files-----
+
+resources folder in WebContent
+Step 1: Add the following entry to your Spring MVC configuration file: spring-mvc-demo-servlet.xml
+
+You can place this entry anywhere in your Spring MVC config file.
+
+<mvc:resources mapping="/resources/**" location="/resources/"></mvc:resources> 
+
+Step 2: Now in your view pages, you can access the static files using this syntax:
+
+<img src="${pageContext.request.contextPath}/resources/images/spring-logo.png"> 
+
+You need to use the JSP expression ${pageContext.request.contextPath} to access the correct root directory for your web application.
+
+Apply the same technique for reading CSS and JavaScript.
+
+-----Generate & Deploy War file-----
+
+1. In Eclipse, stop Tomcat
+
+2. Right-click your project and select Export > WAR File
+
+3. In the Destination field, enter: <any-directory>/mycoolapp.war
+
+4. Outside of Eclipse, start Tomcat
+- If you are using MS Windows, then you should find it on the Start menu
+
+5. Make sure Tomcat is up and running by visiting: http://localhost:8080
+
+6. Deploy your new WAR file by copying it to <tomcat-install-directory>\webapps
+
+Give it about 10-15 seconds to make the deployment. You'll know the deployment is over because you'll see a new folder created in webapps ... with your WAR file name.
+
+7. Visit your new app. If your war file was: mycoolapp.war then you can access it with:  http://localhost:8080/mycoolapp/
