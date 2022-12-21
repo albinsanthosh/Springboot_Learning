@@ -45,3 +45,50 @@ Apply the same technique for reading CSS and JavaScript.
 Give it about 10-15 seconds to make the deployment. You'll know the deployment is over because you'll see a new folder created in webapps ... with your WAR file name.
 
 7. Visit your new app. If your war file was: mycoolapp.war then you can access it with:  http://localhost:8080/mycoolapp/
+
+
+Spring MVC form tags
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+jstl tags
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+-----validator-----
+www.hibernate.org
+
+validator -> releases -> 6.2 -> download zip archive
+
+Extract go to dist folder
+Copy all jars in dist outer folder.
+ALso copy jars in the required folder inside dist/lib folder.
+Copy all these to WEB-INF/lib 
+
+-----validator-Empty-String-----
+@InitBinder - Preprocess
+
+StringTrimmerEditor(true) true means it with strim it to null
+
+WebDataBinder object can register as customer editor the StringTrimmerEditor object for the String class.
+
+-----Regular expression-----
+https://docs.oracle.com/javase/tutorial/essential/regex
+
+
+-----custom error properties file-----
+We basically need to override the default Spring MVC validation messages.
+
+errortype.springmodelattributename.fieldname=errormessage
+
+The format of the error key is:   code + "." + object name + "." + field
+
+To find out the given error code, in your Spring controller, you can log the details of the binding result
+
+System.out.println("Binding result: " + theBindingResult); 
+
+Also edit the spring config file to load custom message resources.
+
+-----Custom Anotation spring mvc-----
+annotation over it 
+@Constraint
+@Target - on methods/fields etc
+@Retention - runtime etc
