@@ -92,3 +92,37 @@ annotation over it
 @Constraint
 @Target - on methods/fields etc
 @Retention - runtime etc
+
+#------------
+HIBERNATE
+#------------
+
+Download MySQL
+http://dev.mysql.com/downloads
+Select MySQL Community Server & Download MSI
+
+Install
+Developer default
+
+To add Hibernate to Eclipse
+1. Create Eclipse Project
+2. Download Hibernate Files
+download link:
+http://www.luv2code.com/download-hibernate
+3. Download MySQL JDBC Driver
+download link:
+http://dev.mysql.com/downloads 
+and select connector/J 
+and select Platform Independent
+and download zip file
+4. Add JAR files to Eclipse Project ... Build Path 
+
+JDBC url
+jdbc:mysql://localhost:3306/hb_student_tracker?useSSL=false&serverTimezone=UTC
+
+Entity Class
+Java class that is mapped to a database table.
+
+Java annotation
+1. Map class to database table.
+1. Map fields to database columns. 
