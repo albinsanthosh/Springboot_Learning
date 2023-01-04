@@ -202,3 +202,9 @@ Foreign key - a column which is primary key in another table
 Cascade delete - if an employee is deleted from a table then their employee details will be deleted from another table also.
 Eager loading - fetches everything 
 Lazy loading - fetches only required
+
+@OneToOne
+Cascade Type - PERSIST, REMOVE, REFRESH, DETACH, MERGE, ALL
+
+For bidirectional
+@OneToOne(mappedBy="instructorDetail", cascade=CascadeType.ALL)
