@@ -126,3 +126,79 @@ Java class that is mapped to a database table.
 Java annotation
 1. Map class to database table.
 1. Map fields to database columns. 
+
+Session factory is once created and session short-lived.
+
+If while creating session factory object, in .configure() no file name specified, by default it will be "hibernate.cfg.xml".
+
+@Id annotation for primary key 
+
+#the values will start from 3000 onwards
+ALTER TABLE hb_student_tracker.student AUTO_INCREAMENT=3000;
+
+#deletes all rows and resets sequence to one
+truncate hb_student_tracker.student
+
+###To show SQL queries values
+(2 methods - manual and maven)
+
+1. Download logback JAR files manually
+- logback-core-1.2.7.jar
+- logback-classic-1.2.7.jar
+- slf4j-api-1.7.32.jar
+
+1b. Copy these files to your project’s lib directory
+1c. Right-click your Eclipse project and select Properties
+1d. Select Build Path > Libraries > Add JARS…
+1e. Select the JAR files from the lib directory
+
+Option 2: Maven dependencies (only required if using Maven)
+Add the following dependency to your Maven pom.xml file.
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.2.7</version>
+</dependency>
+
+2. Create a Logback configuration file
+Notes regarding file location:
+- If you are using manual JAR files place this file at src/logback.xml
+- If you are using Maven, place this file at src/main/resources/logback.xml
+Please make note of the following entry:
+
+    <logger name="com.luv2code.hibernate.demo" level="TRACE"/>
+Be sure the package name matches the name of your package.
+This Logback configuration file allows you to see a low-level trace of Hibernate and this allows you see the real SQL parameter values.
+
+3. Run the CreateStudentDemo application
+Now run your application. You will see a lot of low-level TRACE logs in the Eclipse Console window.
+
+
+For updating an object property, we use setter method of that object and commit transaction.  
+
+#Adding Date
+1. Alter database table for student
+We need to alter the database table to add a new column for "date_of_birth".
+Run the following SQL in your MySQL Workbench tool.
+ALTER TABLE `hb_student_tracker`.`student` 
+ADD COLUMN `date_of_birth` DATETIME NULL AFTER `last_name`;
+
+2. Add a date utils class for parsing and formatting dates
+We need to add a DateUtils class to handle parsing and formatting dates. The source code is here. The class should be placed in the package: com.luv2code.hibernate.demo.
+
+3. Add date field to Student class
+We need to add a date field to the Student class. We map this field to the database column, "date_of_birth". Also, we make use of the @Temporal annotation. This is a Java annotation for storing dates.
+    @Column(name="date_of_birth")
+    @Temporal(TemporalType.DATE)    
+    private Date dateOfBirth;
+
+4. Add toString method to Student class
+We will make an update to the toString method in our Student class.  It will use the formatter from our DateUtils.class. This code is already included in Student.java from the previous step.
+
+5. Update CreateStudentDemo
+
+Primary key - unique id
+Foreign key - a column which is primary key in another table
+Cascade delete - if an employee is deleted from a table then their employee details will be deleted from another table also.
+Eager loading - fetches everything 
+Lazy loading - fetches only required
