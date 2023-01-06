@@ -208,3 +208,11 @@ Cascade Type - PERSIST, REMOVE, REFRESH, DETACH, MERGE, ALL
 
 For bidirectional
 @OneToOne(mappedBy="instructorDetail", cascade=CascadeType.ALL)
+
+Prefer Lazy Loading over Eager Loading.
+
+Default Fetch Types
+@OneToOne - FetchType.EAGER
+@OneToMany - FetchType.LAZY
+@ManyToOne - FetchType.EAGER
+@ManyToMany - FetchType.LAZY
