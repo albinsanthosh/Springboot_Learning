@@ -216,3 +216,113 @@ Default Fetch Types
 @OneToMany - FetchType.LAZY
 @ManyToOne - FetchType.EAGER
 @ManyToMany - FetchType.LAZY
+
+----------
+DAO - DATA ACCESS OBJECT
+Helper/utility class to access database
+
+ENTITY CLASS - Java class that is mapped to a database table 
+
+While importing entity, id, column & table use javax.persistence class
+
+sessionfactory need a dataSource defined earlier.
+
+Customer DAO
+1. Define DAO interface
+2. Define DAO implementation
+	Inject the session factory
+
+@Transactional
+Automagically begin and end transaction for your Hibernate code.
+
+SessionFactory imports from Hibernate package
+Autowired imports from Spring package 
+
+@Repository
+Applies for DAO Implementations
+Spring will automatically register the DAO implementations.
+Spring also provides translation of any JDBC related exceptions.
+
+List Customers
+1. Create Customer.java
+2. Create CustomerDAO.java
+	1. and CustomerDAOImpl.java
+3. Craete CustomerController.java
+4. Create JSP page: list-customers.jsp
+
+JSTL tag library for JSPs
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+${customers} in jsp is our attribute name from our Spring mvc model.
+
+Dev Process for CSS
+1. Place CSS in a 'resources' directory
+(resources directory can be any name but need to be configured in spring)
+2. Configure Spring to serve up 'resources' directory
+<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources> 
+(url mapping, ** to recurse subdirectories)
+3. Reference CSS in your JSP
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" />
+
+Note: This applies for JavaScript, images, pdfs etc...
+(If want to create alternate directory structure, need add multiple entries in Spring config file like for resources above.) 
+
+Welcome file
+1. Server will look for a welcome file
+2. If it doesn't find one, then you'll get 404
+3. Welcome files are configured in web.xml
+inside <welcome-file-list> it will load in top down fashion
+
+To redirect request to a different page in jsp
+<% response.sendRedirect("customer/list"); %>
+
+Here the welcome file containing the redirect request was placed in the WebContent folder.
+
+-----
+Added in Spring 4.3x
+only for GET
+@GetMapping("/processForm") is shortcut for @RequestMapping(path="/processForm", method=RequestMethod.GET) 
+
+only for POST
+@PostMapping("/processForm") is shortcut for @RequestMapping(path="/processForm", method=RequestMethod.POST) 
+
+GET
+Good for debugging
+Bookmark or email URL
+Limitations on data length
+
+POST
+Can't Bookmark or email URL
+No limitations on data length
+Can also send binary data
+
+-----
+Service Layer
+- Service Facade design pattern
+- Intermediate layer for custom business logic
+- Integrate data from multiple sources (DAO/repositories)
+Customer Controller<->Customer Service<->Customer DAO<->DB
+
+e.x.
+				      <->Customer DAO
+Customer Controller<->Customer Service<->Sales DAO
+				      <->License DAO
+
+	@Component
+	    |
+-------------------------
+|	    |		|
+@Controller @Repository @Service
+
+
+
+@Service
+Applied to Service implementations
+It will automatically register the Service implementation thanks to companent-scanning
+
+Customer Service
+1. Define Service interface
+2. Define Service implementation
+	a) Inject the CustomerDAO
+
+@Transactional now defined at Service layer
