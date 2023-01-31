@@ -217,6 +217,9 @@ Default Fetch Types
 @ManyToOne - FetchType.EAGER
 @ManyToMany - FetchType.LAZY
 
+
+----------
+web-customer-tracker project
 ----------
 DAO - DATA ACCESS OBJECT
 Helper/utility class to access database
@@ -326,3 +329,64 @@ Customer Service
 	a) Inject the CustomerDAO
 
 @Transactional now defined at Service layer
+
+-----
+<input type="button" value="Add Customer" onclick="window.location.href='showFormForAdd'; return false;"/>
+onclick here calls our spring controller mapping
+
+Add support for Spring MVC Form Tags for Jsp
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+For redirection in Controller
+return "redirect:/customer/list";
+
+-----
+Update Customer
+1. Update list-customer.jsp
+a) New "Update" link
+2. Create customer-form.jsp
+a) Prepopulate the form
+3. Process form data
+a) Controller > Service > DAO
+
+For the model customer in jsp
+During Form load: Call getters
+During Form submit: Call setters
+
+For update, we need to associate this data with customer id
+<form:hidden path="id"/>
+ above line should be added in the jsp where submitting to update the correct object in database 
+
+save(...) INSERT new record
+update(...) UPDATE existing record
+saveOrUpdate(...) 
+if (primaryKey/id) empty
+then INSERT new customer
+else UPDATE existing customer
+
+-----
+Delete Customer
+1. Add "Delete" link on JSP
+2. Add code for "Delete"
+a) Controller > Service > DAO
+
+-----
+Search
+Overview of Development Process
+1. Create the HTML form
+2. Add mapping to the controller
+3. Add methods in the service layer to delegate to DAO
+4. Add method in the DAO to perfom search
+
+-----
+Sorting columns
+Overview of Development Process
+1. Create a Utility class for sort constants
+2. In JSP page, add sort links for column headers
+3. Update controller to read sort field
+4. Update method in the service layer to delegate to DAO
+5. Update method in the DAO to get customers sorted by given field
+
+----------
+End of web-customer-tracker project
+----------
