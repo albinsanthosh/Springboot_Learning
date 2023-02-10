@@ -390,3 +390,142 @@ Overview of Development Process
 ----------
 End of web-customer-tracker project
 ----------
+-----
+AOP
+2 main Problem
+Code tangling (logging, security tangled in)
+Code scattering (updating all classes)
+
+AOP
+Cross-Cutting Concerns
+Concerns means logic/functionality
+
+Aspects
+Aspect can be reused at multiple locations
+Same aspect/class ... applied based on configuration
+
+Benefits
+- Code for Aspect is defined in a single class
+- Business code in your application is cleaner
+- Configurable
+
+Usecases
+Logging, security, transactions, Audit logging, Exception Handling, API Management
+
+Advantages
+1. Reusable modules
+2. Resolve code tangling
+3. Resolve code scatter
+4. Applied selectively
+5. Applied selectively based on configuration
+
+Disadvantages
+1. Too many aspects and app flow is hard to follow
+2. Minor performance cost for aspect execution(run-time weaving)
+
+Terminology
+Aspect: module of code for a cross-cutting concern(logging, security, ...)
+Advice: What action is taken and when it should be applied
+Join Point: When to apply code during program execution
+Pointcut: A predicate expression for where advice should be applied
+
+Advice Types
+Before advice: run before the method
+After finally advice: run after the method (finally)
+After returning advice: run after the method (success execution)
+After throwing advice: run after method (if exception thrown)
+Around advice: run before and after method
+
+Weaving 
+Connecting aspects to target objects to create an advised object
+Different types of weaving 
+	Compile-time, load-time or run-time
+Regarding performance: run-time weaving is the slowest
+
+2 leading AOP Frameworks for Java
+Spring AOP AspectJ 
+
+Spring AOP uses run-time weaving of aspects
+
+AspectJ 
+Provides complete support for AOP
+Rich support for
+	join points: method-level, constructor, field
+	code weaving: compile-time, post compile-time and load-time
+
+Spring AOP
+Advantages
+1. Simpler to use than AspectJ
+2. Uses Proxy Pattern
+3. Can migrate to AspectJ when using @Aspect Annotation
+
+Disadvantages
+1. Only supports method-level join points
+2. Can only apply aspects to benas created by SPring app context
+3. Minor performance cost for aspect execution (run-time weaving)
+
+AspectJ
+Advantages 
+1. Supports all join points
+2. Works with any POJO, not just beans from app context
+3. Faster performance compared to Spring AOP
+4. Complete AOP support
+
+Disadvantages
+1. Compile-time weaving requires extra compilation step
+2. AspectJ pointcut syntax can become complex
+
+Resources
+Spring AOP Manual:www.spring.io
+Book - AspectJ in Action by Raminvas Laddad
+Aspect-Oreiented Development with Use Cases by Ivar Jacobson and Pan-Wei Ng
+
+Roadmap
+Create Aspects
+Develop Advices
+	Before, After returning, After throwing, 
+	After finally, Around
+Create Pointcut expressions
+Apply it to our big CRM project (Spring MVC + Hibernate) 
+
+Main App <-> AOP Proxy <- Logging Aspect, Security Aspect -> Target Object 
+
+Adding AspectJ JAR file
+
+Development Process - @Before
+1. Create target object: AccountDAO
+2. Create Spring Java Config class
+3. Create main app
+4. Create an Aspect with @Before advice
+
+Best Practices: Aspect and Advices
+1. Keep the code small
+2. Keep the code fast
+3. Do not perform any expensive / slow operations
+4. Get in and out as QUICKLY as possible
+
+-----
+Pointcut: A predicate expression for where advice should be applied
+
+execution(modifiers-pattern? return-type-pattern declaring-type-pattern? method-name-pattern(param-pattern) throws-pattern?)
+The pattern is optional if it has "?"
+
+@Before("execution(public void add*())") Match methods starting with add in any class.
+
+@Before("execution(* processCreditCard*())") Modifier is optional...so you don't have to list it 
+
+To get fully qualified class name -> go to class select the class name and right click and copy qualified name
+
+For param-pattern
+()-matches a method with no arguments
+(*)-matches a method with one argument of any type
+(..)-matches a method with 0 or more arguments of any type
+
+@Before("execution(* addAccount(com.luv2code.aopdemo.Account))")
+Match addAccount methods that have Account param
+
+@Before("execution(* addAccount(..))")
+Match addAccount methods with any number of arguments
+
+@Before("execution(* com.luv2code.aopdemo.dao.*.*(..)")
+Match any method in our DAO package: com.luv2code.aopdemo.dao
