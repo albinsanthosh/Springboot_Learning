@@ -529,3 +529,43 @@ Match addAccount methods with any number of arguments
 
 @Before("execution(* com.luv2code.aopdemo.dao.*.*(..)")
 Match any method in our DAO package: com.luv2code.aopdemo.dao
+
+-----
+
+Step1 - Create Pointcut Declaration
+
+@Pointcut("execution(* com.luv2code.aopdemo.dao.*.*(..)")
+private void forDaoPackage(){}
+
+forDaoPackage name of pointcut declaration, can have any name
+
+Step2 - Apply to multiple advices 
+
+@Before("forDaoPackage()")
+public void performApiAnalytics(){
+}
+
+-----
+Combining Pointcut Expressions using logic operators
+AND (&&)
+OR (||)
+NOT (!)
+
+Step1 - Create Pointcut Declarations
+Step2 - Combine Pointcut Declarations
+Step3 - Apply Pointcut Declaration to advice
+
+-----
+1. Refractore: Place advices in separate Aspects
+2. Add @Order annotation to Aspects
+
+Lower numbers have higher precedence
+
+Give fully qualified name in the pointcut.
+-----
+1. Access and display Method Signature
+o/p void com.luv2code.aopdemo.AccountDAO.addAccount(Account,boolean)
+
+2. Access and display Method Arguments
+
+JoinPoint has metadata about method call
