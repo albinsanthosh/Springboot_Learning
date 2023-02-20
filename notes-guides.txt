@@ -569,3 +569,33 @@ o/p void com.luv2code.aopdemo.AccountDAO.addAccount(Account,boolean)
 2. Access and display Method Arguments
 
 JoinPoint has metadata about method call
+
+-----
+@AfterReturning(pointcut="execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+		returning="result"
+		)
+
+AfterReturning used for Post Processing data also, modified data shows up.
+
+-----
+@After kind of like finally.
+-----
+@Around - Instrumentation/profiling code
+How long does it take for a section of code to run
+
+ProceedingJoinPoint is handle to target method
+
+theProceedingJoinPoint.proceed()
+theProceedingJoinPoint - handle to target method
+proceed() - Execute the target method
+-----
+Resolving Print Order Issue
+The data is printing to two different output streams
+	Spring is printing to the logger output stream.
+	System.out.println is printing to the standard out output stream. 
+
+private static Logger myLogger = Logger.getLogger(AroundWithLoggerDemoApp.class.getName());
+
+getLogger(name) - the name is mostly used is class name.
+
+myLogger.info("to print")
