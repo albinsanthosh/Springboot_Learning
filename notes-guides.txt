@@ -599,3 +599,147 @@ private static Logger myLogger = Logger.getLogger(AroundWithLoggerDemoApp.class.
 getLogger(name) - the name is mostly used is class name.
 
 myLogger.info("to print")
+
+-----
+When using copy Project
+change the context
+right click-> properties -> Web Project Settings
+change to project name if renamed the project to change the url while running.
+
+Add namespace of aop similar to mvc above in line 7 in spring config file.
+Also add schema location as below in config file 
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+
+Add aspectj proxy setting so spring can process @Aspect classes
+----------
+Maven Reference Manual
+www.luv2code.com/mavenreferencemanual
+
+maven - project management tool
+popular use - build management and dependencies
+
+like a personal shopper
+
+How it work?
+1. Read config file
+2. Check local repo
+3. Get from remote repo
+4. Save in local repo
+5. Build and Run
+
+Maven will handle class/build path
+
+Standard Directory structure
+src/main/java - Your Java source code
+src/main/resources - Properties/config files used by your app
+src/main/webapp - JSP files and web config files other web asssets(images, css, js, etc)
+src/test - Unit testing code and properties
+target - Destination directory for compiled code. Automatically created by Maven
+
+Working on web project place code in- src/main/webapp
+
+POM file - project object model file
+	project meta data
+	dependencies
+	plug-ins
+
+Project Coordinates -Elements
+Group Id - Name of company, group, or organization. Convention is to use reverse domain name: com.luv2code
+Artifact Id - Name of this project: mycoolapp
+Version: A specific release version like:1.0 etc. If project is under active development then: 1.0-SNAPSHOT
+
+GAV
+Version is needed for devops
+
+maven central repository: search.maven.org
+alternative: mvnrepository.com
+
+Maven archetype = starter project
+maven-archetype-quickstart : sample Maven project
+maven-archetype-webapp : sample Maven Webapp project
+
+eclipse plugins
+m2e - Maven Integration for eclipse
+m2e-wtp - Maven Integration for WTP (web tools)
+-----
+To change compiler setting 
+Inside pom inside properties 
+
+<maven.compiler.target>1.8</maven.compiler.target> // Generates class files that will work on a given Java version
+<maven.compiler.source>1.8</maven.compiler.source> // The Java version of source code accepted
+
+Update the project
+right click on project - Maven - Update the project
+tick update, refresh, clean checkbox
+-----
+
+Local repository (your local cahe)
+Windows: c:\Users\<users-home-dir>\.m2\repository
+Mac and Linux: ~/.m2/repository
+
+https://repo.maven.apache.org/maven2/
+
+Maven repository manager products
+Archiva - Apache
+Artifactory - JFrog
+Nexus - Sonatype
+
+cloud hosted solution - www.packagecloud.io, www.mymavenrepo.com
+Google search: "maven cloud hosts"
+
+-----
+Spring Security
+-----
+
+Authentication
+Check user id and password with credentials stored in app/db
+
+Authorization
+Check to see if user has an authorized role
+
+Http basic authentication
+Spring security default login form
+Custom Login Form
+
+Step1: Add Maven dependencies for Spring MVC WebApp
+spring-webmvc, javax.servlet-api, jstl, javax.servlet.jsp-api 
+
+Customize Maven Build
+Enable the MVC Java Config
+	@EnableWebMvc - 
+	similar to annotaion driven, 
+	adds conversion, formatting, validation, 
+	Processing of @Controller, @RequestMapping etc
+
+Step2: Create Spring App Configuration(@Configuration)
+
+Step3: Create Spring Dispatcher Servlet Initializer
+Web App Initializer - AbstractAnnotationConfigDispatcherServletInitializer (Add this super class & make file changes)
+
+Step4: Develop our Spring Controller 
+Step5: Develop our JSP view page
+create view folder under bottom src/main/webapp/WEB-INF/
+
+Spring Security & Spring Framework compactibility
+Get the spring security and check the dependent pom there the spring framework version will be mentioned
+
+Add below Spring security dependencies in POM
+spring-security-web
+spring-security-config
+
+-----
+Spring Security Basic Security
+1. Create Spring Security Initializer
+AbstractSecurityWebApplicationInitializer - Special class to register the Spring Security Filters
+
+2. Create Spring Security Configuration(@Configuration)
+WebSecurityConfigurerAdapter
+override/implement configure(AuthenticationManagerBuilder)
+
+3. Add users, passwords and roles
+
+-----
+Context Root  like name of application
+The root path for your web application
+properties -> Web Project Settings -> Context Root
