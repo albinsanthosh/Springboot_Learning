@@ -743,3 +743,36 @@ override/implement configure(AuthenticationManagerBuilder)
 Context Root  like name of application
 The root path for your web application
 properties -> Web Project Settings -> Context Root
+
+-----
+Custom Login form
+1. Modify Spring Security Configuration to reference custom login form
+override configure(HttpSecurity) - Configure security of web paths in application, login, logout etc
+
+2. Develop a Controller to show the custom login form
+3. Create custom login form
+	HTML(CSS optional)
+	Spring MVC form tag <form:form>6
+	default names
+		name="username"
+		password="password"
+
+context root(eclipse) and context path(jsp) means same thing.
+
+.authorizeRequests() - Restrict access based on the HttpServletRequest
+.anyRequest().authenticated() - Any request to the app must be authenticated(ie logged in)
+.formLogin() - We are customizing the form login process
+.loginPage("/showMyLoginPage") - Show our custom form at the request mapping "/showMyLoginPage"
+.loginProcessingUrl("/authenticateTheUser") - Login form should POST data to this URL for processing (check user id and password)
+.permitAll() - Allow everyone to see login page. No need to be logged in.
+
+name of username, password must be username, password.
+
+On login failure
+Spring security will send user back to your login page
+Append an error parameter: ?error
+
+Development Process
+1. Modify custom login form
+	a. Check the error parameter
+	b. If error parameter exists, show an error message
