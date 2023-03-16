@@ -776,3 +776,47 @@ Development Process
 1. Modify custom login form
 	a. Check the error parameter
 	b. If error parameter exists, show an error message
+
+-----
+Logout process
+/logout - default
+Append a logout parameter ?logout
+
+Add logout support in Spring Security Context
+Add logout support in jsp
+Add the logout message in login form after checking the logout parameter
+
+-----
+CSRF (Cross-Site Request Forgery)
+Enabled by default in Spring Security
+It uses Synchronizer Token Pattern. Each request includes a session cookie and randomly generated token.
+For request processing, Spring Security verifies token before processing.  
+All this is handled by SPring Security Filters
+
+When to use
+For any normal browser web requests
+
+To use
+use Post instead of GET
+Include CSRF token in form submission
+<form:form> automatically adds CSRF token
+If you don't use <form:form>, you must manually add CSRF tokenx
+
+What happens if you don't include CSRF token? 403 Forbidden error
+
+-----
+<input type="hidden" name="_csrf" value="1399955a-e3a2-43a0-a410-64b482071b82" />
+Here this is token gets added automagically by spring mvc form:form tag.
+It will pass this token along with session cookie, and spring mvc will compare if this works for this given user session before they actually authorize the request.
+
+Forbidden, The server understood the request but refuses to authorize is shown if only form is used. 
+-----
+Displaying User Id and roles
+1. Update POM file for Spring Security JSP Tag Library.
+	dependecy-spring-security-taglibs
+2. Add Spring Security JSP Tag Library to JSP page.
+3. Display User ID.
+principal.username
+4. Display User Roles.
+principal.authorities
+authorities=userroles
