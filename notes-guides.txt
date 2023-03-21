@@ -815,8 +815,49 @@ Displaying User Id and roles
 1. Update POM file for Spring Security JSP Tag Library.
 	dependecy-spring-security-taglibs
 2. Add Spring Security JSP Tag Library to JSP page.
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 3. Display User ID.
 principal.username
 4. Display User Roles.
 principal.authorities
 authorities=userroles
+-----
+Restrict Access
+1. Create Supporting Controller code and View Pages.
+2. Update Our User Roles.
+3. Restricting Access to Roles
+antMatchers(<<add path to match on >>).hasRole(<< authorized role >>)
+antMatchers(<<add path to match on >>).hasAnyRole(<< authorized role >>) 
+(Any role in the list, comma-delimited list)
+
+------
+Custom Access denied page
+1. Configure custom page for access denied.
+	.exceptionHandling()
+		.accessDeniedPage("/access-denied");
+2. Create supporting controller code and view page.
+-----
+Display content based on role
+jsp
+<security:authorize access="hasRole('MANAGER')">
+</security:authorize>
+-----
+Spring Security JDBC
+It has predefined table schemas
+
+Dev process
+1. Develop SQL Script to set up database
+table - users, authorities
+passwords are stored in a specific format {id}encodedPasword
+noop (no operation)- plain text passwords
+bcrypt - Bcrypt password hashing
+2. Add database support to Maven POM file
+mysql-connector-java, c3p0 (DB Connection Pool)
+3. Create JDBC properties file
+4. Define DataSource in Spring Configuration 
+src/main/resources is a standard Maven directory (files are automatically copied to classpath during Maven build)
+@PropertySource("classpath:persistence-mysql.properties")
+Environment is a special helper class which will hold data read from properties files.	
+5. Update Spring Security Configuration to use JDBC
+auth.jdbcAuthentication().dataSource(securityDataSource);
+Tells Spring Security to use JDBC authentication with our data source.
