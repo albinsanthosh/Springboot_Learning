@@ -894,3 +894,65 @@ free webservice: openweathermap.org
 
 other REST APIs
 www.programmableweb.com
+
+JSON values
+Numbers: no quotes
+String: in doubles quotes
+Boolean: true, false
+Nested JSON object
+Array
+null
+-----
+-----
+Jackson project
+Development Process
+1. Download and import Maven starter files.
+www.luv2code.com/jackson-databinding-json-demo
+2. Add Maven dependency for Jackson project.
+jackson-databind
+3. Create Student POJO Java class.
+4. Create main Driver App.
+
+If a new json contains extra properties, we can enable to ignore unknown properties.
+@JsonIgnoreProperties(ignoreUnknown=true)
+
+-----
+REST over HTTP
+Leverage HTTP methods for CRUD operations
+POST - Create a new entity
+GET - Read a list of entities or single entity
+PUT - Update an existing entity
+DELETE - Delete an existing entity
+
+HTTP Request message
+Request line: the HTTP command
+Header variables: request metadata
+Message body: contents of message
+
+HTTP Response Message
+Response line: server protocol and status code
+Header variables: response metadata
+Message body: contents of message
+
+HTTP Response Status Codes
+Code Range || Description
+100-199 - Informational
+200-299 - Successful
+300-399 - Redirection
+400-499 - Client error
+500-599 - Server error
+
+MIME Content Type
+Multopurpose Internet Mail-Extension
+Basic Syntax: type/sub-type
+Examples: text/html, text/plain, application/json, application/xml
+
+Client Tool
+Send HTTP requests to REST Web Service/API
+
+Plenty of tools available: curl(command line), Postman(GUI) etc
+
+www.jsontest.com
+
+jsonplaceholder.typicode.com (complex response)
+
