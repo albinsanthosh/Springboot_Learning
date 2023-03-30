@@ -956,3 +956,166 @@ www.jsontest.com
 
 jsonplaceholder.typicode.com (complex response)
 
+-----
+Creating a Spring RestController
+1. Add Maven dependency for Spring MVC and Jackson project.
+2. Add code for All Java Config:@Configuration
+3. Add code for All Java Config: Servlet Initializer
+Add super class AbstractAnnotationConfigDispatcherServletInitializer
+in getServletConfigClasses return new Class[] {DemoAppConfig.class}
+in getServletMappings return new String[] { "/" }
+4. Create Spring REST Service using @RestController 
+
+www.luv2code.com/spring-rest-demo
+
+if error 
+javax.servlet.jsp cannot be resolved to a type	index.jsp JSP Problem
+
+Add JSP support in POM.xml
+
+Spring Jackson support
+JSON data being passed to REST controller is converted to Java POJO
+Java POJO being returned from REST controller is converted to JSON
+Happens automatically
+
+-----
+Retrieve POJOs as JSON
+Dev Process
+1. Create Java POJO class for Student
+2. Create Spring REST Service using @RestController
+
+Add ? mark in endpoint if not getting latest data due to caching.
+
+-----
+Using @PathVariable for REST endpoints
+1. Add request mapping to Spring REST Service
+	Bind path variable to method parameter using @PathVariable
+
+@PostConstruct - load the student data only once
+-----
+Exception Handling
+1. Create a custom error response class
+2. Create a custom exception class
+3. Update REST service to throw exception if student not found
+4. Add an exception handler method using @ExceptionHandler
+
+ResponseEntity<>(body, status)
+-----
+Adding generic exception handling
+-----
+Global exception handlers
+We need global exception handlers
+1. Promotes reuse
+2. Centralizes exception handling
+
+@ControllerAdvice
+Similar to an interceptor/ filter
+Pre-process requests to controllers
+Post-process responses to handle exceptions
+Perfect for global exception handling
+
+Dev Process
+1. Create new @ControllerAdvice
+2. Refractor REST service ... remove exception handling code
+3. Add exception handling code to @ControllerAdvice
+
+-----
+REST API Design
+1. Review API requirements
+2. Identify main resource / entity
+convention is to use plural form of resource
+3. Use HTTP methods to assign action on resource
+
+Anti-Patterns
+Don't include actions in the endpoints, instead use HTTP methods to assign actions
+
+POST /api/customers 			Create a new customer
+GET /api/customers 			Read a list of customers
+GET /api/customers/{customerId} 	Read a single customer
+PUT /api/customers 			Update an existing customer
+DELETE /api/customers/{customerId} 	Delete an existing customer
+
+-----
+REST CRUD Database Realtime Project
+Dev Process
+1. Get customers
+2. Get single customers
+3. Add a new customer
+4. Update an existing customer
+5. Delete an existing customer
+www.luv2code.com/spring-crm-rest-demo
+
+code review
+1. pom.xml file
+2. All Java Config
+3. Configuration file for database connection
+4. Hibernate Entity class: Customer
+5. DAO: CustomerDAO ...
+6. Service: CustomerService ...
+
+Get Customers
+Dev Process
+1. Create Customer REST Controller
+2. Autowire CustomerService
+3. Add mapping for GET /customers
+
+Get Single Customer
+3. Add mapping for GET /customers with path
+
+Exception Handling
+1. Create a custom error response class.
+2. Create a custom exception class.
+3. Update REST service to throw exception if customer not found.
+4. Add an exception handler methods using @ExceptionHandler.
+
+Add customer
+Use @RequestBody to access the request body as a POJO
+
+set(0)
+
+saveOrUpdate(...)
+if (primaryKey/id) empty then INSERT new customer
+else UPDATE existing customer
+Here "empty" means null or 0
+
+Adding customer with HTTP POST
+- If REST client is sending a request to "add", using HTTP POST
+- Then we ignore any id sent in the request
+- We overwrite the id with 0, to effectively set it to null/empty
+- Then our backend DAO code will "INSERT" new customer
+
+Sending JSON to Spring REST Controllers
+- When sending JSOn data to Spring REST Controllers
+- For controller to process JSON data, need to set a HTTP request header
+	Content-type: application/json
+- Need to configure REST client to send the correct HTTP request header
+
+Process
+Access the Request Body
+Add Customer
+
+-----
+HTTP Status 405 ? Method Not Allowed
+Type - Status Report
+Message - Request method ‘POST’ not supported
+Description - The method received in the request-line is known by the origin server but not supported by the target resource.
+
+You can resolve this by disabling CSRF with this code snippet: http.csrf().disable();
+
+
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+  ...
+  protected void configure(HttpSecurity http){...}
+  ...
+    http.csrf().disable();
+  ...
+}
+-----
+
+Update Customers
+@PutMapping
+
+Delete Customers
+@DeleteMapping
+-----
+https://github.com/darbyluv2code/spring-boot-3-spring-6-hibernate-for-beginners
