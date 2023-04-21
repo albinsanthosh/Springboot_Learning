@@ -1,3 +1,6 @@
+git 
+https://github.com/darbyluv2code/spring-boot-3-spring-6-hibernate-for-beginners.git
+
 create a controller and add a getMapping for /
 
 Spring framework
@@ -292,3 +295,95 @@ spring.datasource.password=tiger
 Dev Process
 1. Configure the server port
 2. Configure the application context path
+
+-----
+Spring Injection Types
+
+Recommended by Spring.io dev team
+Constructor Injection: required dependencies
+Setter Injection: optional dependencies
+
+Not Recommended by Spring.io dev team
+Field Injection
+As it makes it harder to unit test
+
+Field injection
+@Autowired
+private Coach myCoach
+
+Qualifiers 
+use @Qualifiers("cricketCoach")
+Specify the bean id. Same name as class, first character lower-case
+can be used in constructor or setter methods
+
+ 
+@Primary for primary implementation to use
+@Qualifiers has higher priority than @Primary 
+
+More specific and higher priority than primary
+-----
+Lazy Initialization
+By default, when your application starts, all beans are initialized. Spring will create an instance of each and make them available.
+In lazy initialization, a bean will only be initialized in following cases:
+It is needed for dependency injection or it is explicitly requested.
+
+Add the @Lazy annotation to a given class
+
+Global configuration
+in application.properties 
+spring.main.lazy-initialization=true
+-----
+Bean scopes
+Singleton
+Spring Container creates only one instance of bean by default
+Cached in memory
+All dependency injections for the bean will reference the same bean
+
+Explicitly specify bean scope
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+
+Additional spring bean scopes
+singleton - Creates a single shared instance of the bean. Default scope.
+prototype - Creates a new bean instance for each container request.
+request - Scoped to an HTTP web request. Only used for web apps.
+session - Scoped to an HTTP web session. Only used for web apps.
+global-session - Scoped to a global HTTP web session. Only used for web apps.
+
+Prototype
+new object instance for each injection
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+----
+Bean Lifecycle
+Container Started -> Bean Instantiated -> Dependencies Injected -> Internal Spring Processing -> Your Custom Init Method -> Bean Is Ready For Use/ Container Is Shutdown -> Your Custom Destroy Method -> STOP
+
+For calling custom business logic methods
+Clean up handles to resources(db, sockets, files etc)
+
+@PostConstruct
+@PreDestroy
+
+Dev Process
+1. Define your methods for init and destroy
+2. Add annotations: @PostConstruct and @PreDestroy
+
+For protoype scoped beans, Spring does not call the destroy methods.
+
+Prototype beans are lazy by default. No need to use @Lazy annotation for prototype scopes beans.
+-----
+Java Config Bean 
+
+Dev Process
+1. Create @Configuration class
+2. Define @Bean method to configure the bean
+The bean id defaults to the method name
+3. Inject the bean into our controller
+
+Usecase for @Bean
+Make an existing third-party class available to Spring framework
+You may not have access to the source code of the third-party class. However, you would like to use the third-party class as a Spring bean
+
+e.g. AWS S3 client code is part of AWS SDK source code.
+We can configure it as a Spring bean using @Bean, inject the S3Client as a bean and store our document in S3.
+
+custom bean id in paranthesis @Bean("aquatic")
+
