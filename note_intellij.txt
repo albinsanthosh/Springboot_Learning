@@ -120,14 +120,14 @@ inherits from starter parent.
 - Default configuration of Spring Boot plugin
 >mvn spring-boot:run
 -----
-Spring Boot Dev Tools
+*****Spring Boot Dev Tools*****
 Automatically restarts your application when code is updated.
 Add the dependency
 groupId-org.springframework.boot
 artifactId-spring-boot-devtools
 
-Intellij doesn;t support by default
-To support
+Intellij doesn't support by default
+*****To support*****
 - Select Preferences > Build, Execution, Deployment > Compiler
 Check box Build project automatically
 
@@ -496,3 +496,239 @@ update - Update the database tables schema
 Add logging configs to log SQL statements
 logging.level.org.hibernate.SQL=debug
 logging.level.org.hibernate.orm.jdbc.bind=trace
+
+-----
+@ControllerAdive for global exception handling, preprocess requests to controller, postprocess responses to handle exception.
+
+-----
+Spring Boot Rest Project
+Development process
+1. Set up Database Dev Environment
+2. Create Spring Boot project using Spring Initializr
+3. Get list of employees
+4. Get single employee by ID
+5. Add a new employee
+6. Update an existing employee
+7. Delete an existing employee
+
+Rest DAO dev process (Enable intellij setting for spring boot dev tools)
+1. Update db configs in application.properties
+2. Create Employee entity
+3. Create DAO interface
+4. Create DAO implementation
+5. Create REST controller to use DAO
+
+Service layer - provide controller with a single view of the data that we integrated from multiple backend datasources.
+@Service
+
+A service class (interface) and its implementation
+------
+Update 
+entityManager.merge(theEmployee)
+if id ==0 then save/insert else update
+-----
+Spring Data JPA
+Create a DAO for me
+Plug in my entity type and primary key
+Give me all the basic CRUD features for free
+
+Spring Data JPA provides the interface JpaRepository, exposes methods(some by inheritance from parents)
+
+Dev Process
+1. Extend JpaRepository interface
+2. Use your Repository in your app
+
+Advanced features available for
+- Extending and adding custom queries with JPQL
+- Query Domain Specific Language (Query DSL)
+- Defining custom methods(low-level coding)
+
+We can remove @Transactional as Jpa repository uses by default
+1. Create Spring Data JPA Repository
+2. use in serviceImpl
+
+Java Optional - new feature
+-----
+Spring Data REST
+Create a REST API for me
+use my existing JpaRepository(entity, primary key)
+Give me all the basic REST API CRUD features for free
+
+Simple pluralized form of entity type
+first character of entity type is lowercase
+then just adds an "s" to the entity
+
+Dev process
+1. Add Spring Data REST to your Maven POM file
+groupId - org.springframework.boot
+arifactId - spring-boot-starter-data-rest
+
+3 needs for Spring Data REST - entity, JpaRepository, Pom dependency
+
+Architecture now
+Spring Data REST <-> Spring Data JPA[Employee Repository] <-> DB
+/employees
+
+Spring Data REST endpoints are HATEOAS compliant
+HATEOAS: Hypermedia as the Engine of Application State
+Hypermedia-driven sites provide information to access REST interfaces
+Think of it as meta-data for REST data
+
+HATEOAS uses Hypertext Application Language (HAL) data format
+
+link became http://localhost:8080/employees
+
+To customize our base path, need to add in application.properties
+spring.data.rest.base-path=/magic-api
+
+For delete no response body but response code is 204 success
+
+But it doesn't handle complex pluralized form
+
+Specify plural name/ path with an annotation
+@repositoryRestResource(path="members")
+
+Pagination
+By default page size is 20 elements
+For further we can use query param
+http://localhost:8080/employees?page=0
+
+other properties
+spring.data.rest.default-page-size default size of pages
+spring.data.rest.max-page-size maximum size of pages
+
+e.x.
+spring.data.rest.default-page-size=50
+
+Sorting
+sort by last name acsending is default
+http://localhost:8080/employees?sort=lastName
+
+sort by first name, descending
+http://localhost:8080/employees?sort=firstName,desc
+
+sort by last name, then first name, ascending
+http://localhost:8080/employees?sort=lastName,firstName,asc
+-----
+Spring Security
+
+Basic configuration
+1. Create Spring security Security Configuration
+2. Add users, passwords and roles
+
+noop - no operation
+bcrypt
+
+When we define InMemoryUserDetailsManager, it will check user from here not in application.properties.
+
+Restricting access to roles
+requestMatchers(<< add path to match on >>)
+	.hasRole(<< authorized role >>)
+
+requestMatchers(<< add HTTP METHOD to match on >>, << add path to match on >>)
+	.hasRole(<< authorized role >>)
+
+requestMatchers(<< add HTTP METHOD to match on >>, << add path to match on >>)
+	.hasAnyRole(<< list of authorized roles >>)
+
+e.x.
+requestMatchers(HttpMethod.DELETE, "/api/employees/**").hasRole("ADMIN")
+
+http.httpBasic; use HTTP Basic authentication
+
+CSRF
+http.csrf().disable() // disable Cross site request forgery (CSRF)
+-----
+JDBC Authentication
+Dev Process
+1. Develop SQL Script to set up database tables.
+2. Add database support to Maven POM file.
+3. Create JDBC properties file.
+4. Update Spring Security Configuration to use JDBC.
+
+Need to have tables
+users
+username - VARCHAR(50)
+password - VARCHAR(50)
+enabled - TINYINT(1)
+
+authorities
+username - VARCHAR(50)
+authority - VARCHAR(50)
+
+Bcrypt encryption
+www.luv2code.com/generate-bcrypt-password
+
+Dev process
+1. Run SQL Script that contains encrypted passwords
+Modify DDL for password field, length should be 68
+
+
+Custom Tables authentication
+1. Create our custom tables with SQL
+2. Update Spring Security Configuration
+	- Provide query to find user by user name
+	- Provide query to find authorities/ roles by user name
+
+For DEBUG error logging
+logging.level.org.springframework.security=DEBUG
+
+https://www.luv2code.com/bonus-lecture-spring-boot-rest-security-jpa-hibernate-bcrypt-code
+-----
+Thymeleaf - Java templating engine
+Used to generate the HTML views for webapps
+
+Thymleaf template - can be an HTML page wth some thymeleaf expressions.
+Include dynamic content from Thymeleaf expressions.
+
+Dev Process
+1. Add Thymeleaf to Maven POM file
+2. Develop Spring MVC Controller
+3. Create Thymeleaf template
+
+In Springboot, your Thymeleaf template go in
+src/main/resources/templates
+
+For webapps, Thymeleaf template have a .html extension
+
+Additional features
+-Looping and conditionals
+-CSS and JavaScript integration
+-Template layouts and fragments
+
+Using CSS with Thymeleaf templates
+-Local CSS files as part of your project
+-Referencing remote CSS files
+
+Dev Process
+1. Create CSS file
+2. Reference CSS in Thymeleaf template
+3. Apply CSS style
+
+Springboot will look for static resources in the directory
+src/main/resources/static
+
+Springboot will search following directories for static resources
+1. /META-INF/resources
+2. /resources
+3. /static
+4. /public
+search order: top-down
+
+3rd party css libraries addition
+Download bootstrap file and add to /static/css directory
+Remote files using CDN using href
+
+Springboot Thymeleaf CRUD database project
+Dev process
+1. Get list of employees
+2. Add a new employee
+3. Update an existing employee
+4. Delete an existing employee
+
+
+
+
+
+
+
