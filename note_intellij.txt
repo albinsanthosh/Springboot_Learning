@@ -725,6 +725,51 @@ Dev process
 2. Add a new employee
 3. Update an existing employee
 4. Delete an existing employee
+-----
+index.html in resources/static loads automatically in localhost:8080 if no page/path is specified
+
+index.html Redirects to employees/list
+<meta http-equiv = "refresh"
+      content = "2; url ='employees/list'" />
+
+Add Employee Dev process
+1. New Add Employee button for list-employees.html
+2. Create HTML form for new employee
+3. Process form data to save employee
+
+Thymeleaf Expressions
+To build HTML form
+Expression - Description
+th:action - Location to send form data
+th:object - Reference to model attribute
+th:field - Bind input field to a property on model attribute
+
+*{firstName} Selects property on referenced th:object
+
+@symbol Reference context path of your application (app root)
+
+Send form data to /employees/save
+<form action="#" th:action="@{/employees/save}"
+                         th:object="${employee}" method="POST">
+
+action"#" tells that thymeleaf will handle further
+employee obejct defined in conroller
+
+Spring Data JPA magic
+findAllByOrderByLastNameAsc - from Employee order by lastName asc
+
+Update Employee
+1. "Update" button
+2. Pre-populate the form
+3. Process form data
+
+Delete Employee
+1. Add "Delete" button/link on page
+2. Add controller code for "Delete"
+
+In controller method, use a redirect to prevent duplicate submissions
+return "redirect:/employees/list";
+
 
 
 
