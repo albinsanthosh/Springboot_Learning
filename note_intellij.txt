@@ -770,10 +770,195 @@ Delete Employee
 In controller method, use a redirect to prevent duplicate submissions
 return "redirect:/employees/list";
 
+-----
+Spring Security
 
+Implemented using servlet filters in background
+2 methods of securing an app: declarative and programmatic
 
+Authentication
+Check user id and password with credentials stored in app/db
 
+Authorization
+Check to see if user has an authorized role
 
+Enabling Spring Security
+1. Edit pom.xml and add spring-boot-starter-security
+2. This will automagically secure all endpoints for application
 
+Different Login Methods
+HTTP Basic Authentication
+Default login form
+Custom login form
 
+Dev Process
+1. Create project at Spring Initializr website
+	a. Add Maven dependencies for Spring MVC Web App, Security, Thymeleaf
+2. Develop our Spring Controller
+3. Develop our Thymeleaf view page
 
+Basic Configuration
+1. Create Spring Security Configuration(@Configuration)
+2. Add users, passwords and roles
+
+Custom Login Form
+1. Modify Spring Security Configuration to reference custom login form
+2. Develop a Controller to show the custom login form
+3. Create custom login form
+	HTML (CSS optional)
+
+.loginPage("/showMyLoginPage")
+.loginProcessingUrl("/authenticateTheUser") Login form should post data to this url for processing
+
+Note
+Need to create a controller for this request handling "showMyLoginPage"
+No Controller Request Mapping required for this "authenticateTheUser", we get this for free
+
+/authenticateTheUser -> handled by Spring Security Filters
+
+custom form
+Send data to login processing URL: /authenticateTheUser 
+Must POST the data
+default names for login fields
+User name field: username
+Password field: password
+Spring Security filters will read the form data and authenticate the user
+
+Context Root / Context Path
+root path of your web application
+context root: my-ecommerce-app
+http://localhost:8080/my-ecommerce-app
+
+@ - gives us access to context path dynamically 
+
+This approach is best practice using context path dynamically than hardcoding it
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+XML 
+Namespace doesn't connect to Internet. 
+Just a unique identifier that is configured in the Thymeleaf JAR file
+
+-----
+Error failed Login
+	Send user back to your login page
+	Append an error parameter
+
+Dev process
+1. Modify custom login form
+	a. Check the error parameter
+	b. If error parameter exists, show an error message
+
+Custom login form with bootstrap
+1. Modify form to point to our login processing URL
+2. Verify form fields for username and password
+3. Change our controller to use our new Boootstrap login form
+-----
+Logout
+
+Dev Process
+1. Add logout support to Spring Security Configuration
+2. Add logout button to homepage
+3. Update login form to display "logged out" message
+
+Addd logout support for default URL /logout
+.logout(logout -> logout.permitAll())
+
+Send data to defauklt logout URL /logout
+By default, must use POST method
+
+When logout is processed, by default Spring Security will...
+Invalidate user's HTTP session and remove session cookies, etc
+Send user back to your login page
+Append a logout parameter: ?logout
+
+If logout then show mesage on login form
+-----
+Display UserId and Roles
+
+Dev Process
+1. Display User Id
+2. Display User Roles
+
+sec:authentication="principal.username"
+sec:authentication="principal.authorities"
+-----
+Restrict access based on roles
+
+Dev process
+1. Create supporting controller code and view pages 
+2. Restrict Access based on Roles
+
+requestMatchers(<< add path to match on >>).hasRole(<< authorized role >>)
+
+3. Restrict Access based on Roles
+requestMatchers(<< add path to match on >>).hasAnyRole(<< list of authorized roles >>)
+
+/leaders/**
+** means subdirectories here
+----
+Custom Access Denied page
+
+Dev Process
+1. Configure custom page for access denied
+2. Create supporting contoller code and view page
+
+.exceptionHandling(configurer -> 
+configurer
+	.accessDeniedPage("/access-denied"))
+
+-----
+Display content based on roles
+
+Modify home.html - Add security tags
+----
+Database access
+
+Dev Process
+1. Develop SQL Script to set up database tables
+2. Add database support to Maven POM file
+3. Create JDBC properties file
+4. Update Spring Security Configuration to use JDBC
+
+Default
+users
+username VARCHAR(50) primary
+password VARCHAR(50)
+enables TINYINT(1)
+
+authorities
+username VARCHAR(50) foreign
+authority VARCHAR(50)
+
+Added in pom
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+-----
+Bcript encryption
+
+Dev Process
+
+1. Run SQL Script that contains encrypted passwords
+	a. Modify DDL for password field, length should be 68
+
+Login Process
+1. Retrieve password from db for the user
+2. Read the encoding algorithm id (bcrypt etc)
+3. For case of brypt, encrypt plaintext password from login form (using salt from db password)
+4. Compare encrypted password from login form WITH encrypted password from db
+5. If there is a match, login successful
+6. If no match, login NOT successful  
+-----
+Custom Tables
+
+1. Create our custom tables with SQL
+2. Update Spring Security Configuration
+	a) Provide query to find user name
+	b) Provide query to find authorities / roles by user name
