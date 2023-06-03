@@ -962,3 +962,123 @@ Custom Tables
 2. Update Spring Security Configuration
 	a) Provide query to find user name
 	b) Provide query to find authorities / roles by user name
+
+-----
+Hibernate Advanced Mapping
+
+Primary Key: identify a unique row in a table
+Foreign key: 
+Link tables together
+A field in one table that refers to primary key in another table
+
+Cascade
+Apply the same operation to related entities
+Save Instructor and Instructor Detail
+
+If we delete an instructor, we should also delete their instructor_detail
+CASCADE_DELETE
+
+Eager will retrieve everything 
+Lazy will retrieve on request
+-----
+One-to-One
+
+Dev Process
+1. Prep work - Define database tables
+2. Create InstructorDetail class
+3. Create Instructor class
+4. Create Main App
+
+Hiberanate Entity Lifecycle
+Operations Description
+Detach If entity is detached, it is not associated with a Hibernate session
+Merge If instance is detached from session, then merge will reattach to session
+Persist Transiitions new instances to managed state. Next Flush/commit will save in db
+Remove Transition managed entity to be removed. Next flush/commit will delete from db
+Refresh Reload/synch object with data from db. Prevents stale data
+
+@OnetoOne Casacde types
+Cascade Type description
+PERSIST If entity is persisted/saved, related entity will also be persited
+REMOVE If entity is removed/deleted, related entity will also be deleted
+REFRESH If entity is refreshed, related entity will also be refreshed
+DETACH  If entity is detached(not associated w/ session), related entity will also be detached
+MERGE  If entity is merged, related entity will also be merged
+ALL All of above cascade types
+-----
+Generate project
+Add
+@Bean
+	public CommandLineRunner commandLineRunner(String[] args){
+		
+		return runner -> {
+			System.out.println("Hello World");
+		};
+	}
+
+Add database connection
+
+set up mapping to InstructorDetail entity in instructor entity class
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "instructor_detail_id")
+    private InstructorDetail instructorDetail;
+
+
+4.1 Create DAO Interface
+4.2 Create DAO impl
+4.3 Main app
+
+Log SQL statements
+logging.level.org.hibernate.SQL=trace
+Log values for SQL statements
+logging.level.org.hibernate.orm.jdbc.bind=trace
+
+entityManager.find(Instructor.class, theId)
+Default behavior of @OneToOne fetch type is eager
+
+entityManager.find(tempInstructor);
+This will ALSO delete the instructor details object because of CasacadeType.ALL
+-----
+One-to-one Bidirectional
+
+Dev Process
+1. Make updates to InstructorDetail class
+	a. Add new field to reference Instructor
+	b. Add getter/setter methods for Instructor
+	c. Add @OneToOne annotation
+2. Create Main App
+
+in table instructor_detail
+@OneToOne(mappedBy="instructorDetail", cascade=CascadeType.ALL)
+private Instructor instructor;
+
+mappedBy tells
+Look at the instructorDetail property in the Instructor class
+Use information from the Instructor class @JoinColumn
+To help find associated instructor
+
+cascade=CascadeType.ALL
+Cascade all operations to associated Instructor
+
+Instructor<=>InstructorDetail
+
+Only Delete InstructorDetail
+Keep the Instructor
+cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+
+// remove the associated object reference
+// break bi-directional link
+//
+tempInstructorDetail.getInstructor().setInstructorDetail(null);
+updates instructor column to null
+-----
+One-to-Many
+
+Dev Process
+1. Prep Work - Define database tables
+2. Create Course class
+3. Update Instructor class
+4. Create Main App
+
+Delete the course don't delete the instructor
